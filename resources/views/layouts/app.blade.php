@@ -14,6 +14,8 @@
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
+    @yield('style')
+
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
@@ -102,6 +104,8 @@
             <!-- Begin Page Content -->
             <div class="container-fluid">
 
+                {!! session()->get('message') !!}
+
                 @yield('content')
 
             </div>
@@ -114,7 +118,7 @@
         <footer class="sticky-footer bg-white">
             <div class="container my-auto">
                 <div class="copyright text-center my-auto">
-                    <span>Copyright &copy; Your Website 2020</span>
+                    <span>Copyright &copy; Your Website {{ date('Y') }}</span>
                 </div>
             </div>
         </footer>
@@ -154,7 +158,33 @@
     </div>
 </div>
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+@yield('script')
+
 <!-- Scripts -->
 <script src="{{ asset('js/app.js') }}" defer></script>
+
+<script>
+    // Ajax function
+    var ajaxCall = function (method, url, data, callback) {
+        $("#ajaxloader").show();
+        $.ajax({
+            url: url,
+            type: method,
+            data: data,
+            complete: function (response) {
+                $("#ajaxloader").hide();
+                var output = {
+                    "code": response.status,
+                    "json": response.responseJSON,
+                    "text": response.responseText,
+                    "raw": response,
+                };
+                callback(output);
+            }
+        });
+    };
+</script>
 </body>
 </html>

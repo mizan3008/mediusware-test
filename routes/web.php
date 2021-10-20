@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\ProductController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,6 +25,8 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::middleware('auth')->group(function () {
     Route::resource('product-variant', 'VariantController');
+    Route::post('product/image', [ProductController::class, 'uploadImage']);
+    Route::get('product/image/{product}', [ProductController::class, 'fetchImageByProduct']);
     Route::resource('product', 'ProductController');
     Route::resource('blog', 'BlogController');
     Route::resource('blog-category', 'BlogCategoryController');
